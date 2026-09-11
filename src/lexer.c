@@ -4,12 +4,14 @@
 #include <stdlib.h>
 #include <string.h>
 
-//This is a test comment for commits
-
 int main()
 {
+	//Get environment variables for prompt
+	char *user = getenv("USER");
+	char *machine = getenv("MACHINE");
+	char *pwd = getenv("PWD");
 	while (1) {
-		printf("> ");
+		printf("%s@%s:%s> ", user, machine, pwd);
 
 		/* input contains the whole command
 		 * tokens contains substrings from input split by spaces
