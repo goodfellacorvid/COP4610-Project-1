@@ -21,9 +21,10 @@ int main()
 		printf("whole input: %s\n", input);
 
 		tokenlist *tokens = get_tokens(input);
+		tokens = expand_env_variables(tokens); //Expand environment variables
+
 		for (int i = 0; i < tokens->size; i++) {
 			printf("token %d: (%s)\n", i, tokens->items[i]);
-			is_env_var(tokens->items[i]);
 		}
 
 		free(input);
