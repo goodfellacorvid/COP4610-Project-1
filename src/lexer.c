@@ -1,5 +1,6 @@
 #include "lexer.h"
 #include "env_var.h"
+#include "path_search.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -25,6 +26,12 @@ int main()
 
 		for (int i = 0; i < tokens->size; i++) {
 			printf("token %d: (%s)\n", i, tokens->items[i]);
+			if (strcmp(tokens->items[i], "ls") == 0)
+			{
+				char *pathname = search_for_path(tokens->items[i]);
+				printf("Pathname for ls: %s\n", pathname);
+				free(pathname);
+			}
 		}
 
 		free(input);
