@@ -1,5 +1,6 @@
 #include "lexer.h"
 #include "env_var.h"
+#include "tildex.h"
 #include "path_search.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -22,6 +23,7 @@ int main()
 		printf("whole input: %s\n", input);
 
 		tokenlist *tokens = get_tokens(input);
+		tokens = expand_tilde(tokens);
 		tokens = expand_env_variables(tokens); //Expand environment variables
 
 		for (int i = 0; i < tokens->size; i++) {
