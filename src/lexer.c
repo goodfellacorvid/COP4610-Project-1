@@ -2,6 +2,7 @@
 #include "env_var.h"
 #include "tildex.h"
 #include "path_search.h"
+#include "extern_exec.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -24,17 +25,20 @@ int main()
 
 		tokenlist *tokens = get_tokens(input);
 		tokens = expand_tilde(tokens);
-		tokens = expand_env_variables(tokens); //Expand environment variables
+		tokens = expand_env_variables(tokens); // Expand environment variables
+		char *pathname = search_for_path(tokens->items[0]); // Get pathname of command to execute
 
 		for (int i = 0; i < tokens->size; i++) {
 			printf("token %d: (%s)\n", i, tokens->items[i]);
-			if (strcmp(tokens->items[i], "ls") == 0)
-			{
-				char *pathname = search_for_path(tokens->items[i]);
-				printf("Pathname for ls: %s\n", pathname);
-				free(pathname);
-			}
 		}
+		
+		if (pathname) 
+		{
+			external_command_exec(pathname, tokens);
+			free(pathname);
+		}
+		else printf("Command not recognized.\n"); // Do nothing if command DNE
+		
 
 		free(input);
 		free_tokens(tokens);
