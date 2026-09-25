@@ -3,30 +3,30 @@
 [Description]
 
 ## Group Members
-- **John Doe**: jd19@fsu.edu
-- **Jane Smith**: js19@fsu.edu
-- **Alex Brown**: ab19@fsu.edu
+- **Devan Erle**: de24a@fsu.edu
+- **Travern Martini**: js19@fsu.edu
+- **Alexey Cherepanov**: ab19@fsu.edu
 ## Division of Labor
 
 ### Part 1: Prompt
-- **Responsibilities**: [Description]
-- **Assigned to**: John Doe
+- **Responsibilities**: Implement prompt for the user which accesses environment variables to appear in the form of $USER@$MACHINE:$PWD>
+- **Assigned to**: Devan Erle
 
 ### Part 2: Environment Variables
-- **Responsibilities**: [Description]
-- **Assigned to**: Jane Smith
+- **Responsibilities**: The tokens are parsed for any environment variables, and expanded accordingly if they exist. If the variable is invalid, replace token with '0\' to flag as error.
+- **Assigned to**: Devan Erle
 
 ### Part 3: Tilde Expansion
-- **Responsibilities**: [Description]
-- **Assigned to**: Alex Brown
+- **Responsibilities**: Expand any input of ~ or ~/ with the home environment variable. Replace the original token with the expanded token.
+- **Assigned to**: Travern Martini
 
 ### Part 4: $PATH Search
-- **Responsibilities**: [Description]
-- **Assigned to**: Alex Brown, Jane Smith
+- **Responsibilities**: Take the first token of the input and search for the executable in the directories of the $PATH environment variable. Retrieve the complete pathname of the executable.
+- **Assigned to**: Devan Erle
 
 ### Part 5: External Command Execution
-- **Responsibilities**: [Description]
-- **Assigned to**: Alex Brown, Jane Smith
+- **Responsibilities**: Take in a pathname for an executable and a list of input tokens. Fork() a child process, and then execute the command with execv() and pathname and token list as inputs. Display error message if unsuccessful.
+- **Assigned to**: Devan Erle
 
 ### Part 6: I/O Redirection
 - **Responsibilities**: [Description]
@@ -69,11 +69,10 @@ shell/
 ## How to Compile & Execute
 
 ### Requirements
-- **Compiler**: e.g., `gcc` for C/C++, `rustc` for Rust.
-- **Dependencies**: List any libraries or frameworks necessary (rust only).
+- **Compiler**: gcc
+- **Dependencies**: N/A
 
 ### Compilation
-For a C/C++ example:
 ```bash
 make
 ```
@@ -87,24 +86,25 @@ This will run the program ...
 ## Development Log
 Each member records their contributions here.
 
-### [Member 1]
+### [Devan Erle]
 
 | Date       | Work Completed / Notes |
 |------------|------------------------|
-| YYYY-MM-DD | [Description of task]  |
-| YYYY-MM-DD | [Description of task]  |
-| YYYY-MM-DD | [Description of task]  |
+| 2026-09-11 | Prompt appears in form of $user@$machine:$pwd>  |
+| 2026-09-14 | Implemented environment variable expansion for tokens  |
+| 2026-09-21 | Path search for executables in the first token of input implemented  |
+| 2026-09-24 | External command execution implemented, might need to add more stuff to .c file for IO redirection  |
 
-### [Member 2]
+### [Travern Martini]
 
 | Date       | Work Completed / Notes |
 |------------|------------------------|
-| YYYY-MM-DD | [Description of task]  |
+| 2026-09-22 | Implemented tilde expansion (~/test1 becomes /home/user/test1)  |
 | YYYY-MM-DD | [Description of task]  |
 | YYYY-MM-DD | [Description of task]  |
 
 
-### [Member 3]
+### [Alexey Cherepanov]
 
 | Date       | Work Completed / Notes |
 |------------|------------------------|
@@ -118,7 +118,7 @@ Document in-person meetings, their purpose, and what was discussed.
 
 | Date       | Attendees            | Topics Discussed | Outcomes / Decisions |
 |------------|----------------------|------------------|-----------------------|
-| YYYY-MM-DD | [Names]              | [Agenda items]   | [Actions/Next steps]  |
+| 2026-09-09 | [Alexey Cherepanov, Travern Martini, Devan Erle]              | Project requirements   | Timeline/Division of Labor  |
 | YYYY-MM-DD | [Names]              | [Agenda items]   | [Actions/Next steps]  |
 
 
