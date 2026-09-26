@@ -4,7 +4,7 @@
 
 ## Group Members
 - **Devan Erle**: de24a@fsu.edu
-- **Travern Martini**: js19@fsu.edu
+- **Traven Martini**: tvm23a@fsu.edu
 - **Alexey Cherepanov**: ab19@fsu.edu
 ## Division of Labor
 
