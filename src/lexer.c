@@ -3,6 +3,7 @@
 #include "tildex.h"
 #include "path_search.h"
 #include "extern_exec.h"
+#include "io_redir.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -31,7 +32,7 @@ int main()
 		for (int i = 0; i < tokens->size; i++) {
 			printf("token %d: (%s)\n", i, tokens->items[i]);
 		}
-		
+		get_redirection(tokens);
 		if (pathname) 
 		{
 			external_command_exec(pathname, tokens);
