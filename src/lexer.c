@@ -3,6 +3,7 @@
 #include "tildex.h"
 #include "path_search.h"
 #include "extern_exec.h"
+#include "intern_exec.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -12,9 +13,8 @@ int main()
 	//Get environment variables for prompt
 	char *user = getenv("USER");
 	char *machine = getenv("MACHINE");
-	char *pwd = getenv("PWD");
 	while (1) {
-		printf("%s@%s:%s> ", user, machine, pwd);
+		printf("%s@%s:%s> ", user, machine, getenv("PWD"));
 
 		/* input contains the whole command
 		 * tokens contains substrings from input split by spaces
@@ -32,9 +32,21 @@ int main()
 			printf("token %d: (%s)\n", i, tokens->items[i]);
 		}
 		
-		if (pathname) 
+		if (is_builtin(tokens->items[0]))
+		{
+			if (run_builtin(tokens))
+				record_valid_command(input);
+			if (strcmp(tokens->items[0], "exit") == 0)
+			{
+				free(input);
+				free_tokens(tokens);
+				break;
+			}
+		}
+		else if (pathname) 
 		{
 			external_command_exec(pathname, tokens);
+			record_valid_command(input);
 			free(pathname);
 		}
 		else printf("Command not recognized.\n"); // Do nothing if command DNE
