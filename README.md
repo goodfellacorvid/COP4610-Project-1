@@ -94,6 +94,7 @@ Each member records their contributions here.
 | 2026-09-14 | Implemented environment variable expansion for tokens  |
 | 2026-09-21 | Path search for executables in the first token of input implemented  |
 | 2026-09-24 | External command execution implemented, might need to add more stuff to .c file for IO redirection  |
+| 2026-09-26 | Work on implementing IO redirection, pushed to a remote branch (not main)  |
 
 ### [Travern Martini]
 
