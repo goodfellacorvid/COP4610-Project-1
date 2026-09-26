@@ -8,6 +8,12 @@ typedef struct {
     size_t size;
 } tokenlist;
 
+typedef struct {
+    char * out_file;
+    char * in_file;
+    char * cmd;
+} redirect;
+
 char * get_input(void);
 tokenlist * get_tokens(char *input);
 tokenlist * new_tokenlist(void);

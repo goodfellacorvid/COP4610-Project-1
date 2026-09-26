@@ -32,10 +32,21 @@ int main()
 		for (int i = 0; i < tokens->size; i++) {
 			printf("token %d: (%s)\n", i, tokens->items[i]);
 		}
-		get_redirection(tokens);
+		redirect * cmd_direction = get_redirection(tokens);
+		printf("Back in lexer.c.\n");
+		printf("Verified input file: %s\n", cmd_direction->in_file);
+		printf("Verified output file: %s\n", cmd_direction->out_file);
+		if (cmd_direction->in_file)
+		{
+			printf("Verified input file: %s\n", cmd_direction->in_file);
+		}
+		if (cmd_direction->out_file)
+		{
+			printf("Verified output file: %s\n", cmd_direction->out_file);
+		}
 		if (pathname) 
 		{
-			external_command_exec(pathname, tokens);
+			external_command_exec(pathname, tokens, cmd_direction);
 			free(pathname);
 		}
 		else printf("Command not recognized.\n"); // Do nothing if command DNE
