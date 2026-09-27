@@ -4,6 +4,7 @@
 #include "path_search.h"
 #include "extern_exec.h"
 #include "intern_exec.h"
+#include "io_redir.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -32,6 +33,28 @@ int main()
 			printf("token %d: (%s)\n", i, tokens->items[i]);
 		}
 		
+		redirect * redir = get_redirection(tokens);
+
+		// Some test code to make sure redir has valid values, ignore this
+		// if (redir)
+		// {
+		// 	printf("Desired redirection:\n");
+		// 	printf("Tokenlist: \n");
+		// 	for (int j = 0; j < redir->tokens->size; j++)
+		// 	{
+		// 		printf("%s ", redir->tokens->items[j]);
+		// 	}
+		// 	printf("\n");
+		// 	if (redir->in_file)
+		// 	{
+		// 		printf("Desired input: %s\n", redir->in_file);
+		// 	}
+		// 	if (redir->out_file)
+		// 	{
+		// 		printf("Desired output: %s\n", redir->out_file);
+		// 	}
+		// }
+
 		if (is_builtin(tokens->items[0]))
 		{
 			if (run_builtin(tokens))
@@ -43,9 +66,10 @@ int main()
 				break;
 			}
 		}
+		else if (!redir) printf("Invalid redirection.\n");
 		else if (pathname) 
 		{
-			external_command_exec(pathname, tokens);
+			external_command_exec(pathname, tokens, redir);
 			record_valid_command(input);
 			free(pathname);
 		}

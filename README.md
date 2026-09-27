@@ -95,6 +95,7 @@ Each member records their contributions here.
 | 2026-09-21 | Path search for executables in the first token of input implemented  |
 | 2026-09-24 | External command execution implemented, might need to add more stuff to .c file for IO redirection  |
 | 2026-09-26 | Work on implementing IO redirection, pushed to a remote branch (not main)  |
+| 2026-09-27 | Output redirection implemented, still need to do input redirection  |
 
 ### [Travern Martini]
 
