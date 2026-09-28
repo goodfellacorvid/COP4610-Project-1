@@ -47,8 +47,22 @@ void execute_pipeline(tokenlist *tokens){
     }
 
     // TODO: implement pipe(), fork(), dup2(), and execv() logic - (in progress)
-    int pipes[2][2]; //2 pipes
-    pid_t pids[3];   //3 commands
+    // int pipes[2][2]; //2 pipes
+    // pid_t pids[3];   //3 commands
+
+    // Dynamically allocate memory based on the actual number of commands
+    pid_t *pids = malloc(num_cmds * sizeof(pid_t));
+    
+    // Allocate the 2D pipe array (only if there are actually pipes needed)
+    int (*pipes)[2] = NULL;
+    if (num_pipes > 0) {
+        pipes = malloc(num_pipes * sizeof(int[2]));
+    }
+
+    if (pids == NULL || (num_pipes > 0 && pipes == NULL)) {
+        perror("Memory allocation failed");
+        return;
+    }
 
     for(int i = 0; i < num_cmds; i++){
         //1. creating a pipe for this command (except for the very last command)
@@ -134,6 +148,12 @@ void execute_pipeline(tokenlist *tokens){
     //3. parent waits for all children to finish before returning to shell
     for(int i = 0; i < num_cmds; i++){
         waitpid(pids[i], NULL, 0);
+    }
+
+    //4. freeing dynamic memory
+    free(pids);
+    if (pipes != NULL) {
+        free(pipes);
     }
 
     // freeing the split command tokens
