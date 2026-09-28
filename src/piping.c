@@ -37,14 +37,14 @@ void execute_pipeline(tokenlist *tokens, int is_background, char *input){
         }
     }
 
-    //verifying that parsing vorked
-    for(int i = 0; i < num_cmds; i++){
-        printf("Command %d: ", i);
-        for(int j = 0; j < commands[i]->size; j++){
-            printf("[%s] ", commands[i]->items[j]);
-        }
-        printf("\n");
-    }
+    // //verifying that parsing vorked
+    // for(int i = 0; i < num_cmds; i++){
+    //     printf("Command %d: ", i);
+    //     for(int j = 0; j < commands[i]->size; j++){
+    //         printf("[%s] ", commands[i]->items[j]);
+    //     }
+    //     printf("\n");
+    // }
 
     // TODO: implement pipe(), fork(), dup2(), and execv() logic - (in progress)
     // int pipes[2][2]; //2 pipes

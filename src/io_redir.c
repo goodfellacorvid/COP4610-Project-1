@@ -5,6 +5,7 @@ redirect *get_redirection(tokenlist *tokens)
     redirect *redir = (redirect *)malloc(sizeof(redirect*));
     redir->in_file = NULL;
     redir->out_file = NULL;
+    // Tokenlist in redir to ensure redirection tokens aren't passed to execv as input
     redir->tokens = new_tokenlist();
 
     for (int i = 0; i < tokens->size; i++)
@@ -54,11 +55,5 @@ redirect *get_redirection(tokenlist *tokens)
             }
         }
     }
-    // Test code to make sure the proper tokens were stored, ignore this
-    // printf("In io_redir.c: tokens after parsing for IO redirection\n");
-    // for (int i = 0; i < redir->tokens->size; i++)
-    // {
-    //     printf("token: %s\n", redir->tokens->items[i]);
-    // }
     return redir;
 }

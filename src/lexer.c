@@ -29,7 +29,6 @@ int main()
 		 */
 
 		char *input = get_input();
-		//printf("whole input: %s\n", input);
 
 		tokenlist *tokens = get_tokens(input);
 
@@ -53,32 +52,8 @@ int main()
 		}
 
 		char *pathname = search_for_path(tokens->items[0]); // Get pathname of command to execute
-
-		for (int i = 0; i < tokens->size; i++) {
-			printf("token %d: (%s)\n", i, tokens->items[i]);
-		}
 		
-		redirect * redir = get_redirection(tokens);
-
-		// Some test code to make sure redir has valid values, ignore this
-		// if (redir)
-		// {
-		// 	printf("Desired redirection:\n");
-		// 	printf("Tokenlist: \n");
-		// 	for (int j = 0; j < redir->tokens->size; j++)
-		// 	{
-		// 		printf("%s ", redir->tokens->items[j]);
-		// 	}
-		// 	printf("\n");
-		// 	if (redir->in_file)
-		// 	{
-		// 		printf("Desired input: %s\n", redir->in_file);
-		// 	}
-		// 	if (redir->out_file)
-		// 	{
-		// 		printf("Desired output: %s\n", redir->out_file);
-		// 	}
-		// }
+		redirect * redir = get_redirection(tokens); // Get redirection info about command
 
 		//intercepting piped commands before the shell tries to run them as normal
 		//checking with if statement at the beginning
@@ -105,7 +80,20 @@ int main()
 		}
 		else printf("Command not recognized.\n"); // Do nothing if command DNE
 		
-
+		// Free everything stored by redir
+		if (redir)
+		{
+			free_tokens(redir->tokens);
+			if (redir->in_file)
+			{
+				free(redir->in_file);
+			}
+			if (redir->out_file)
+			{
+				free(redir->out_file);
+			}
+		}
+		// Free input and tokens
 		free(input);
 		free_tokens(tokens);
 	}

@@ -11,8 +11,21 @@ bool external_command_exec(const char * pathname, tokenlist *tokens, redirect * 
     pid_t pid = fork();
 
     // For IO redirection
-    int fd; // Declaration for later use
+    int ofd;
+    int ifd;
+    int infd;
     int outfd;
+    if (redirection->in_file)
+    { 
+        infd = dup(STDIN_FILENO);
+        close(STDIN_FILENO);
+        ifd = open(redirection->in_file, O_RDONLY);
+        if (ifd < 0)
+        { // Wrror when opening
+            perror(redirection->in_file);
+            return false;
+        }
+    }
     if (redirection->out_file)
     { // Output should be redirected to specified file. Overwrite it, or create if it doesn't already exist
         if (remove(redirection->out_file) == 0)
@@ -21,8 +34,12 @@ bool external_command_exec(const char * pathname, tokenlist *tokens, redirect * 
         }
         outfd = dup(STDOUT_FILENO);
         close(STDOUT_FILENO);
-        // File is readable and writeable
-        fd = open(redirection->out_file,O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
+        ofd = open(redirection->out_file,O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
+        if (ofd < 0)
+        { // Error when opening
+            perror(redirection->out_file);
+            return false;
+        }
     }
     if (pid == 0)
     { //Process is child, execute command
@@ -35,6 +52,11 @@ bool external_command_exec(const char * pathname, tokenlist *tokens, redirect * 
         if (!is_background) {
             waitpid(pid, NULL, 0); 
         }
+    }
+    if (redirection->in_file)
+    {
+        dup2(infd, STDIN_FILENO);
+        close(infd);
     }
     if (redirection->out_file)
     {
