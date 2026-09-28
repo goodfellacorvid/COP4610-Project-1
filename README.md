@@ -1,6 +1,6 @@
 # Shell
 
-[Description]
+A simple shell that interacts with the unix operating system and supports internal and external execution commands, IO redirection, piping, and background jobs. Built in C. 
 
 ## Group Members
 - **Devan Erle**: de24a@fsu.edu
@@ -87,7 +87,7 @@ shell/
 ```bash
 make
 ```
-This will build the executable in ...
+This will build the executable in /bin
 ### Execution
 ```bash
 make run
@@ -96,7 +96,7 @@ OR
 ```bash
 ./bin/shell
 ```
-This will run the program ...
+This will run the program.
 
 ## Development Log
 
