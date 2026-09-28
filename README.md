@@ -33,8 +33,8 @@
 - **Assigned to**: Jane Smith
 
 ### Part 7: Piping
-- **Responsibilities**: [Description]
-- **Assigned to**: John Doe
+- **Responsibilities**: Implement piping functionality to enable the seamless flow of data between commands. Done through allocating pipe file descriptors, using fork() to spawn child processes, and using dup2() to route output of one command to the input of the next.
+- **Assigned to**: Alexey Cherepanov
 
 ### Part 8: Background Processing
 - **Responsibilities**: [Description]
@@ -49,8 +49,8 @@
 - **Assigned to**: Alex Brown, Jane Smith
 
 ### Extra Credit
-- **Responsibilities**: [Description]
-- **Assigned to**: Alex Brown
+- **Responsibilities**: Implement a support for unlimited number of pipes, support for piping and I/O redirection in a single line, and an ability to execute the shell from within a running shell process repeatedly
+- **Assigned to**: Alexey Cherepanov, Devan Erle, Travern Martini
 
 ## File Listing
 ```
@@ -110,8 +110,8 @@ Each member records their contributions here.
 
 | Date       | Work Completed / Notes |
 |------------|------------------------|
-| YYYY-MM-DD | [Description of task]  |
-| YYYY-MM-DD | [Description of task]  |
+| 2026-09-11 | Setting up development environment, starting to work on tilde expansion (not finished or implemented)  |
+| 2026-09-27 | Implemented piping and related extra credit  |
 | YYYY-MM-DD | [Description of task]  |
 
 
@@ -131,9 +131,9 @@ Document in-person meetings, their purpose, and what was discussed.
 - **Bug 3**: This is bug 3.
 
 ## Extra Credit
-- **Extra Credit 1**: [Extra Credit Option]
-- **Extra Credit 2**: [Extra Credit Option]
-- **Extra Credit 3**: [Extra Credit Option]
+- **Extra Credit 1**: Support unlimited number of pipes - Alexey Cherepanov
+- **Extra Credit 2**: Support piping and I/O redirection in a single command - Alexey Cherepanov
+- **Extra Credit 3**: Shell-ception - Devan Erle, Trevan Martini
 
 ## Considerations
 [Description]

@@ -5,6 +5,7 @@
 #include "extern_exec.h"
 #include "intern_exec.h"
 #include "io_redir.h"
+#include "piping.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -55,7 +56,12 @@ int main()
 		// 	}
 		// }
 
-		if (is_builtin(tokens->items[0]))
+		//intercepting piped commands before the shell tries to run them as normal
+		//checking with if statement at the beginning
+		if(count_pipes(tokens) > 0){
+			execute_pipeline(tokens);
+			record_valid_command(input);
+		}else if (is_builtin(tokens->items[0]))
 		{
 			if (run_builtin(tokens))
 				record_valid_command(input);
