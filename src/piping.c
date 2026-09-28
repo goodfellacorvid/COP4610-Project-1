@@ -109,13 +109,13 @@ void execute_pipeline(tokenlist *tokens){
             }
 
             //resolving path and execute
-            char *path = search_for_path(commands[i]->items[0]);
+            char *path = search_for_path(redir->tokens->items[0]);
             if(path == NULL){
-                printf("Command not found: %s\n", commands[i]->items[0]);
+                printf("Command not found: %s\n", redir->tokens->items[0]);
                 exit(1);
             }
             
-            execv(path, commands[i]->items);
+            execv(path, redir->tokens->items);
             perror("Execution failed"); // if execv fails
             exit(1);
             
