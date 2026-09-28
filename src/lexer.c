@@ -29,9 +29,17 @@ int main()
 		 */
 
 		char *input = get_input();
-		printf("whole input: %s\n", input);
+		//printf("whole input: %s\n", input);
 
 		tokenlist *tokens = get_tokens(input);
+
+		//preventing empty input crashes (occured while testing background processing)
+		if(tokens->size == 0){
+			free(input);
+			free_tokens(tokens);
+			continue; // skips the execution and loops back to print a new prompt
+		}
+
 		tokens = expand_tilde(tokens);
 		tokens = expand_env_variables(tokens); // Expand environment variables
 
