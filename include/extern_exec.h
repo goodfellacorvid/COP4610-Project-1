@@ -8,4 +8,4 @@
 #include <fcntl.h>
 #include "lexer.h"
 
-bool external_command_exec(const char * pathname, tokenlist * tokens, redirect * redirection);
+bool external_command_exec(const char * pathname, tokenlist * tokens, redirect * redirection, int is_background, char *input);

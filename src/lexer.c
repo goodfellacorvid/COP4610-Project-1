@@ -6,6 +6,7 @@
 #include "intern_exec.h"
 #include "io_redir.h"
 #include "piping.h"
+#include "bg_processing.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -15,7 +16,12 @@ int main()
 	//Get environment variables for prompt
 	char *user = getenv("USER");
 	char *machine = getenv("MACHINE");
+
+	init_bg_jobs(); // initializing parallel arrays for background processing
+
 	while (1) {
+		check_bg_jobs(); //checking for finished processs
+
 		printf("%s@%s:%s> ", user, machine, getenv("PWD"));
 
 		/* input contains the whole command
@@ -28,6 +34,16 @@ int main()
 		tokenlist *tokens = get_tokens(input);
 		tokens = expand_tilde(tokens);
 		tokens = expand_env_variables(tokens); // Expand environment variables
+
+		// detecting and removing '&' flag
+		int is_background = 0;
+		if (tokens->size > 0 && strcmp(tokens->items[tokens->size - 1], "&") == 0) {
+			is_background = 1;
+			free(tokens->items[tokens->size - 1]);
+			tokens->items[tokens->size - 1] = NULL;
+			tokens->size--;
+		}
+
 		char *pathname = search_for_path(tokens->items[0]); // Get pathname of command to execute
 
 		for (int i = 0; i < tokens->size; i++) {
@@ -59,7 +75,7 @@ int main()
 		//intercepting piped commands before the shell tries to run them as normal
 		//checking with if statement at the beginning
 		if(count_pipes(tokens) > 0){
-			execute_pipeline(tokens);
+			execute_pipeline(tokens, is_background, input);
 			record_valid_command(input);
 		}else if (is_builtin(tokens->items[0]))
 		{
@@ -75,7 +91,7 @@ int main()
 		else if (!redir) printf("Invalid redirection.\n");
 		else if (pathname) 
 		{
-			external_command_exec(pathname, tokens, redir);
+			external_command_exec(pathname, tokens, redir, is_background, input);
 			record_valid_command(input);
 			free(pathname);
 		}
