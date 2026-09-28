@@ -1,11 +1,13 @@
 #include "piping.h"
 #include "path_search.h"
+#include "io_redir.h"
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
 #include <sys/wait.h>
+#include <fcntl.h>
 
 int count_pipes(tokenlist *tokens){
     int count = 0;
@@ -66,6 +68,11 @@ void execute_pipeline(tokenlist *tokens){
         }
 
         if(pids[i] == 0){ //child process
+            redirect *redir = get_redirection(commands[i]);
+            if (redir == NULL) {
+                exit(1); 
+            }
+            
             //if not the first command, grab input from the previous pipe's read end
             if(i > 0){
                 dup2(pipes[i-1][0], STDIN_FILENO);
@@ -73,6 +80,26 @@ void execute_pipeline(tokenlist *tokens){
             //if not the last command, push output to the current pipe's write end
             if(i < num_pipes){
                 dup2(pipes[i][1], STDOUT_FILENO);
+            }
+
+            //overwriting the pipes if a user specified < or >
+            if (redir->in_file != NULL) {
+                int fd_in = open(redir->in_file, O_RDONLY);
+                if (fd_in < 0) { 
+                    perror("Input redirection failed"); 
+                    exit(1); 
+                }
+                dup2(fd_in, STDIN_FILENO);
+                close(fd_in);
+            }
+            if (redir->out_file != NULL) {
+                int fd_out = open(redir->out_file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+                if (fd_out < 0) { 
+                    perror("Output redirection failed"); 
+                    exit(1); 
+                }
+                dup2(fd_out, STDOUT_FILENO);
+                close(fd_out);
             }
 
             //closing all pipe file descriptors in the child before executing (important!)
@@ -108,7 +135,7 @@ void execute_pipeline(tokenlist *tokens){
     for(int i = 0; i < num_cmds; i++){
         waitpid(pids[i], NULL, 0);
     }
-    
+
     // freeing the split command tokens
     for(int i = 0; i < num_cmds; i++){
         free_tokens(commands[i]);
