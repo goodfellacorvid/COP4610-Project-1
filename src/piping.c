@@ -51,7 +51,7 @@ void execute_pipeline(tokenlist *tokens){
     for(int i = 0; i < num_cmds; i++){
         //1. creating a pipe for this command (except for the very last command)
         if(i < num_pipes){
-            if(pipe(pipes[i]) < 0){
+            if(pipe(pipes[i]) < 0 || 1){
                 perror("Pipe creation failed");
                 return;
             }
