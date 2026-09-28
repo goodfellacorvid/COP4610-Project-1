@@ -46,10 +46,20 @@ void execute_pipeline(tokenlist *tokens) {
     }
     // ------------------------------------
 
-    // TODO: Implement pipe(), fork(), dup2(), and execv() logic here
-    pid_t pids[3]; // Supports up to 3 chained commands
+    // TODO: implement pipe(), fork(), dup2(), and execv() logic - (in progress)
+    int pipes[2][2]; // Supports up to 2 pipes
+    pid_t pids[3];   // Supports up to 3 chained commands
 
     for (int i = 0; i < num_cmds; i++) {
+        // 1. creating a pipe for this command (except for the very last command)
+        if (i < num_pipes) {
+            if (pipe(pipes[i]) < 0) {
+                perror("Pipe creation failed");
+                return;
+            }
+        }
+
+        // 2. forking the process
         pids[i] = fork();
         
         if (pids[i] < 0) {
@@ -59,20 +69,53 @@ void execute_pipeline(tokenlist *tokens) {
 
         if (pids[i] == 0) { 
             // --- CHILD PROCESS ---
-            printf("Success: Child process spawned for command [%s]\n", commands[i]->items[0]);
             
-            // We exit immediately for now so the child doesn't accidentally run the shell loop
-            exit(0); 
-        } 
+            // if not the first command, grab input from the previous pipe's read end
+            if (i > 0) {
+                dup2(pipes[i-1][0], STDIN_FILENO);
+            }
+            // if not the last command, push output to the current pipe's write end
+            if (i < num_pipes) {
+                dup2(pipes[i][1], STDOUT_FILENO);
+            }
+
+            // closing all pipe file descriptors in the child before executing (important!)
+            for (int j = 0; j <= i && j < num_pipes; j++) {
+                close(pipes[j][0]);
+                close(pipes[j][1]);
+            }
+
+            // resolving path and execute
+            char *path = search_for_path(commands[i]->items[0]);
+            if (path == NULL) {
+                printf("Command not found: %s\n", commands[i]->items[0]);
+                exit(1);
+            }
+            
+            execv(path, commands[i]->items);
+            perror("Execution failed"); // if execv fails
+            exit(1);
+            
+        } else {
+            // --- PARENT PROCESS ---
+            
+            // parent closes the read end of the previous pipe (passed to child)
+            if (i > 0) {
+                close(pipes[i-1][0]);
+            }
+            // parent closes the write end of the current pipe (prevents the pipeline from hanging)
+            if (i < num_pipes) {
+                close(pipes[i][1]);
+            }
+        }
     }
 
-    // --- PARENT PROCESS ---
-    // Wait for all children to finish before returning to the shell prompt
+    // 3. parent waits for all children in the pipeline to finish before returning to shell prompt
     for (int i = 0; i < num_cmds; i++) {
         waitpid(pids[i], NULL, 0);
     }
 
-    // Free the split command tokens
+    // freeing the split command tokens
     for (int i = 0; i < num_cmds; i++) {
         free_tokens(commands[i]);
     }
