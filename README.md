@@ -29,8 +29,8 @@
 - **Assigned to**: Devan Erle
 
 ### Part 6: I/O Redirection
-- **Responsibilities**: [Description]
-- **Assigned to**: Jane Smith
+- **Responsibilities**: Parse input for redirection tokens displayed in any order. If there is an input file, verify that it's readable before storing the name of the input file and output file. At the same time, build a tokenlist that excludes any redirection tokens (<,>, outfile, and infile) and can be safely passed to execv. Set the stdin and stdout to infile and outfile if they exist, and then close when the forked process in execv is done.
+- **Assigned to**: Devan Erle
 
 ### Part 7: Piping
 - **Responsibilities**: Implement piping functionality to enable the seamless flow of data between commands. Done through allocating pipe file descriptors, using fork() to spawn child processes, and using dup2() to route output of one command to the input of the next.
@@ -41,12 +41,8 @@
 - **Assigned to**: Alexey Cherepanov
 
 ### Part 9: Internal Command Execution
-- **Responsibilities**: [Description]
-- **Assigned to**: Alex Brown
-
-### Part 10: External Timeout Executable
-- **Responsibilities**: [Description]
-- **Assigned to**: Alex Brown, Jane Smith
+- **Responsibilities**: Implement internal command execution (cd/exit/jobs), display last 3 valid commands
+- **Assigned to**: Travern Martini
 
 ### Extra Credit
 - **Responsibilities**: Implement a support for unlimited number of pipes, support for piping and I/O redirection in a single line, and an ability to execute the shell from within a running shell process repeatedly
@@ -57,11 +53,26 @@
 shell/
 │
 ├── src/
-│ ├── main.c
-│ └── shell.c
+│ ├── bg_processing.c
+│ ├── env_var.c
+│ ├── extern_exec.c
+│ ├── intern_exec.c
+│ ├── io_redir.c
+│ ├── lexer.c
+│ ├── path_search.c
+│ ├── piping.c
+│ └── tildex.c
 │
 ├── include/
-│ └── shell.h
+│ ├── bg_processing.h
+│ ├── env_var.h
+│ ├── extern_exec.h
+│ ├── intern_exec.h
+│ ├── io_redir.h
+│ ├── lexer.h
+│ ├── path_search.h
+│ ├── piping.h
+│ └── tildex.h
 │
 ├── README.md
 └── Makefile
@@ -96,14 +107,14 @@ Each member records their contributions here.
 | 2026-09-24 | External command execution implemented, might need to add more stuff to .c file for IO redirection  |
 | 2026-09-26 | Work on implementing IO redirection, pushed to a remote branch (not main)  |
 | 2026-09-27 | Output redirection implemented, still need to do input redirection  |
+| 2026-09-28 | Finished IO redirection, code cleanup, updated readme  |
 
 ### [Travern Martini]
 
 | Date       | Work Completed / Notes |
 |------------|------------------------|
 | 2026-09-22 | Implemented tilde expansion (~/test1 becomes /home/user/test1)  |
-| YYYY-MM-DD | [Description of task]  |
-| YYYY-MM-DD | [Description of task]  |
+| 2026-09-24 | Implemented internal command execution  |
 
 
 ### [Alexey Cherepanov]
@@ -121,14 +132,11 @@ Document in-person meetings, their purpose, and what was discussed.
 | Date       | Attendees            | Topics Discussed | Outcomes / Decisions |
 |------------|----------------------|------------------|-----------------------|
 | 2026-09-09 | [Alexey Cherepanov, Travern Martini, Devan Erle]              | Project requirements   | Timeline/Division of Labor  |
-| YYYY-MM-DD | [Names]              | [Agenda items]   | [Actions/Next steps]  |
 
 
 
 ## Bugs
-- **Bug 1**: This is bug 1.
-- **Bug 2**: This is bug 2.
-- **Bug 3**: This is bug 3.
+No known bugs
 
 ## Extra Credit
 - **Extra Credit 1**: Support unlimited number of pipes - Alexey Cherepanov
@@ -136,4 +144,4 @@ Document in-person meetings, their purpose, and what was discussed.
 - **Extra Credit 3**: Shell-ception - Devan Erle, Trevan Martini
 
 ## Considerations
-[Description]
+No additional considerations
