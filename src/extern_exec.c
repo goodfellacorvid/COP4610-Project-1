@@ -1,10 +1,12 @@
 #include "extern_exec.h"
+#include "bg_processing.h"
 #include <stdio.h>
 #include <unistd.h>
 #include <fcntl.h>
+#include <sys/wait.h>
 
 // This function takes in a pathname for a command, the list of arguments, and then executes it
-bool external_command_exec(const char * pathname, tokenlist *tokens, redirect * redirection)
+bool external_command_exec(const char * pathname, tokenlist *tokens, redirect * redirection, int is_background, char *input)
 {
     pid_t pid = fork();
 
@@ -29,13 +31,18 @@ bool external_command_exec(const char * pathname, tokenlist *tokens, redirect * 
         exit(1);
     }
     else
-    { // Process is parent, wait on child
-        waitpid(pid, NULL, 0); // Parent will wait on child- the status of child is stored by NULL (can replace with ptr later)
+    { // Process is parent, wait on child OR send to background
+        if (!is_background) {
+            waitpid(pid, NULL, 0); 
+        }
     }
     if (redirection->out_file)
     {
         dup2(outfd, STDOUT_FILENO);
         close(outfd);
+    }
+    if (is_background) {
+        add_bg_job(pid, input);
     }
     return true;
 }

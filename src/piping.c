@@ -1,6 +1,7 @@
 #include "piping.h"
 #include "path_search.h"
 #include "io_redir.h"
+#include "bg_processing.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -18,7 +19,7 @@ int count_pipes(tokenlist *tokens){
     return count;
 }
 
-void execute_pipeline(tokenlist *tokens){
+void execute_pipeline(tokenlist *tokens, int is_background, char *input){
     int num_pipes = count_pipes(tokens);
     int num_cmds = num_pipes + 1;
     
@@ -144,11 +145,15 @@ void execute_pipeline(tokenlist *tokens){
         }
     }
 
-    //3. parent waits for all children to finish before returning to shell
-    for(int i = 0; i < num_cmds; i++){
+    //3. parent waits or backgrounds the process
+    if(is_background){
+      add_bg_job(pids[num_cmds - 1], input);
+    }else{
+      for(int i = 0; i < num_cmds; i++){
         waitpid(pids[i], NULL, 0);
+      }
     }
-
+    
     //4. freeing dynamic memory
     free(pids);
     if (pipes != NULL) {
