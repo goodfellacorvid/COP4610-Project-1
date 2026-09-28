@@ -7,5 +7,3 @@ int count_pipes(tokenlist *tokens);
 
 // Handles splitting the tokens and executing the piped commands
 void execute_pipeline(tokenlist *tokens);
-
-#endif
