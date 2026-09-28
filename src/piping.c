@@ -1,7 +1,6 @@
 #include "piping.h"
 #include "path_search.h"
 #include "io_redir.h"
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
