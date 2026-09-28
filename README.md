@@ -92,10 +92,13 @@ This will build the executable in ...
 ```bash
 make run
 ```
+OR
+```bash
+./bin/shell
+```
 This will run the program ...
 
 ## Development Log
-Each member records their contributions here.
 
 ### [Devan Erle]
 
