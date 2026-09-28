@@ -108,7 +108,7 @@ void execute_pipeline(tokenlist *tokens){
     for(int i = 0; i < num_cmds; i++){
         waitpid(pids[i], NULL, 0);
     }
-
+    
     // freeing the split command tokens
     for(int i = 0; i < num_cmds; i++){
         free_tokens(commands[i]);
