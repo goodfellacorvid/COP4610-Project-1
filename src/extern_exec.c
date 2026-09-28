@@ -32,16 +32,17 @@ bool external_command_exec(const char * pathname, tokenlist *tokens, redirect * 
     }
     else
     { // Process is parent, wait on child OR send to background
-        if(is_background){
-            add_bg_job(pid, input);
-        }else{
-            waitpid(pid, NULL, 0); // Parent will wait on child- the status of child is stored by NULL (can replace with ptr later)
+        if (!is_background) {
+            waitpid(pid, NULL, 0); 
         }
     }
     if (redirection->out_file)
     {
         dup2(outfd, STDOUT_FILENO);
         close(outfd);
+    }
+    if (is_background) {
+        add_bg_job(pid, input);
     }
     return true;
 }

@@ -33,7 +33,7 @@ int main()
 
 		tokenlist *tokens = get_tokens(input);
 
-		//preventing empty input crashes (occured while testing background processing)
+		//preventing empty input crashes (segfault occured while testing background processing)
 		if(tokens->size == 0){
 			free(input);
 			free_tokens(tokens);

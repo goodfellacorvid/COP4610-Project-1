@@ -37,8 +37,8 @@
 - **Assigned to**: Alexey Cherepanov
 
 ### Part 8: Background Processing
-- **Responsibilities**: [Description]
-- **Assigned to**: Alex Brown, John Doe
+- **Responsibilities**: Incorporate background processing functionality 
+- **Assigned to**: Alexey Cherepanov
 
 ### Part 9: Internal Command Execution
 - **Responsibilities**: [Description]
