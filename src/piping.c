@@ -1,4 +1,6 @@
 #include "piping.h"
+#include "path_search.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -45,6 +47,30 @@ void execute_pipeline(tokenlist *tokens) {
     // ------------------------------------
 
     // TODO: Implement pipe(), fork(), dup2(), and execv() logic here
+    pid_t pids[3]; // Supports up to 3 chained commands
+
+    for (int i = 0; i < num_cmds; i++) {
+        pids[i] = fork();
+        
+        if (pids[i] < 0) {
+            perror("Fork failed");
+            return;
+        }
+
+        if (pids[i] == 0) { 
+            // --- CHILD PROCESS ---
+            printf("Success: Child process spawned for command [%s]\n", commands[i]->items[0]);
+            
+            // We exit immediately for now so the child doesn't accidentally run the shell loop
+            exit(0); 
+        } 
+    }
+
+    // --- PARENT PROCESS ---
+    // Wait for all children to finish before returning to the shell prompt
+    for (int i = 0; i < num_cmds; i++) {
+        waitpid(pids[i], NULL, 0);
+    }
 
     // Free the split command tokens
     for (int i = 0; i < num_cmds; i++) {
