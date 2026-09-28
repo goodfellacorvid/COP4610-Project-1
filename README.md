@@ -37,7 +37,7 @@
 - **Assigned to**: Alexey Cherepanov
 
 ### Part 8: Background Processing
-- **Responsibilities**: Incorporate background processing functionality 
+- **Responsibilities**: Incorporate background processing functionality with a seamless integration with I/O redirection and piping.
 - **Assigned to**: Alexey Cherepanov
 
 ### Part 9: Internal Command Execution
@@ -112,7 +112,7 @@ Each member records their contributions here.
 |------------|------------------------|
 | 2026-09-11 | Setting up development environment, starting to work on tilde expansion (not finished or implemented)  |
 | 2026-09-27 | Implemented piping and related extra credit  |
-| YYYY-MM-DD | [Description of task]  |
+| 2026-09-28 | Implemented background processing  |
 
 
 ## Meetings
