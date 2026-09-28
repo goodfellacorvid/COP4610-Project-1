@@ -55,6 +55,9 @@ int main()
 		// 		printf("Desired output: %s\n", redir->out_file);
 		// 	}
 		// }
+
+		//intercepting piped commands before the shell tries to run them as normal
+		//checking with if statement at the beginning
 		if(count_pipes(tokens) > 0){
 			execute_pipeline(tokens);
 			record_valid_command(input);
